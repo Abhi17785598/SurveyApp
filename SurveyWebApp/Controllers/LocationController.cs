@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+using Npgsql;
 using System.Data;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
@@ -24,15 +24,15 @@ namespace SurveyWebApp.Controllers
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
                     
                     string sql = @"
-                        INSERT INTO UserLocations (UserId, Latitude, Longitude, Accuracy, [Timestamp], EventType)
+                        INSERT INTO UserLocations (UserId, Latitude, Longitude, Accuracy, Timestamp, EventType)
                         VALUES (@UserId, @Latitude, @Longitude, @Accuracy, @Timestamp, @EventType)";
                     
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@UserId", request.UserId);
                         command.Parameters.AddWithValue("@Latitude", request.Latitude);
@@ -67,7 +67,7 @@ namespace SurveyWebApp.Controllers
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
                     
@@ -77,11 +77,11 @@ namespace SurveyWebApp.Controllers
                         WHERE UserId = @UserId
                         ORDER BY Timestamp DESC";
                     
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@UserId", userId);
                         
-                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        using (NpgsqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             var locations = new List<LocationResponse>();
                             

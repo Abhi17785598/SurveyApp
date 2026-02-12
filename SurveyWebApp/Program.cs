@@ -10,7 +10,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Data.SqlClient;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +41,7 @@ builder.Services.AddCors(options =>
 
 // ================= DB =================
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     .EnableSensitiveDataLogging(false)
     .EnableServiceProviderCaching()
     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
