@@ -61,6 +61,13 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+// ================= AUTO DATABASE CREATION =================
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated(); // Creates database and tables
+}
+
 // ================= PERFORMANCE MONITORING =================
 app.Use(async (context, next) =>
 {
