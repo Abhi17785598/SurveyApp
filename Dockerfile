@@ -9,12 +9,12 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore as distinct layers
-COPY ["SurveyWebApp.csproj", "./"]
-RUN dotnet restore "./SurveyWebApp.csproj"
+COPY ["SurveyWebApp/SurveyWebApp.csproj", "./SurveyWebApp/"]
+RUN dotnet restore "./SurveyWebApp/SurveyWebApp.csproj"
 
 # Copy the rest of the files and build
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/SurveyWebApp"
 RUN dotnet build "SurveyWebApp.csproj" -c Release -o /app/build
 
 # Publish the application
