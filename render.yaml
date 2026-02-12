@@ -6,7 +6,7 @@ services:
     region: oregon
     plan: free
     dockerfilePath: ./Dockerfile
-    dockerContext: .
+    dockerContext: ./SurveyWebApp
     healthCheckPath: /health
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
