@@ -1,0 +1,1355 @@
+/* Mobile App-like Feature Pages CSS */
+
+/* Main Content Padding for Fixed Header */
+.feature-page {
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+/* Hero Sections */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section.enhanced {
+    padding: 4rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ff6b6b 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.hero-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: particle-float 6s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 25%; top: 60%; animation-delay: 1s; }
+.particle:nth-child(3) { left: 50%; top: 30%; animation-delay: 2s; }
+.particle:nth-child(4) { left: 75%; top: 70%; animation-delay: 3s; }
+.particle:nth-child(5) { left: 90%; top: 40%; animation-delay: 4s; }
+
+@keyframes particle-float {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+    50% { transform: translateY(-20px) scale(1.2); opacity: 0.6; }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+}
+
+.hero-icon.animated {
+    animation: hero-icon-bounce 3s ease-in-out infinite;
+}
+
+@keyframes hero-icon-bounce {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+    25% { transform: translateY(-10px) scale(1.1) rotate(5deg); }
+    50% { transform: translateY(-5px) scale(1.05) rotate(-5deg); }
+    75% { transform: translateY(-15px) scale(1.15) rotate(3deg); }
+}
+
+.hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    background: linear-gradient(45deg, #ffffff, #f8f9fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Enhanced Floating Rewards */
+.floating-rewards {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-coin {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: float-up-enhanced 6s ease-in-out infinite;
+    opacity: 0.4;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.floating-coin:nth-child(1) { left: 5%; animation-delay: 0s; animation-duration: 5s; }
+.floating-coin:nth-child(2) { left: 20%; animation-delay: 1s; animation-duration: 6s; }
+.floating-coin:nth-child(3) { left: 40%; animation-delay: 2s; animation-duration: 7s; }
+.floating-coin:nth-child(4) { left: 60%; animation-delay: 3s; animation-duration: 5.5s; }
+.floating-coin:nth-child(5) { left: 80%; animation-delay: 4s; animation-duration: 6.5s; }
+.floating-coin:nth-child(6) { left: 95%; animation-delay: 5s; animation-duration: 5.8s; }
+
+@keyframes float-up-enhanced {
+    0% { 
+        transform: translateY(150px) rotate(0deg) scale(0.8); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 0.4; 
+        transform: translateY(120px) rotate(45deg) scale(1); 
+    }
+    50% { 
+        opacity: 0.6; 
+        transform: translateY(50px) rotate(180deg) scale(1.1); 
+    }
+    90% { 
+        opacity: 0.4; 
+        transform: translateY(-20px) rotate(315deg) scale(0.9); 
+    }
+    100% { 
+        transform: translateY(-50px) rotate(360deg) scale(0.7); 
+        opacity: 0; 
+    }
+}
+
+/* Rewards Hero Specific Styles */
+.rewards-hero.enhanced {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #ff6b6b 70%, #ffd93d 100%);
+    background-size: 300% 300%;
+    animation: rewards-gradient 12s ease infinite;
+}
+
+@keyframes rewards-gradient {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 25%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 75%; }
+    100% { background-position: 0% 50%; }
+}
+
+.rewards-hero .hero-icon.animated {
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+
+.rewards-hero .hero-title {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    animation: title-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes title-glow {
+    0% { text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.2); }
+    100% { text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.4); }
+}
+
+.rewards-hero .hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+/* Metrics Grid */
+.metrics-grid, .speed-metrics, .points-overview, .time-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card, .speed-card, .points-card, .time-card {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover, .speed-card:hover, .points-card:hover, .time-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+}
+
+.metric-icon, .speed-icon, .points-icon, .time-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value, .speed-value, .points-value, .time-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.25rem;
+}
+
+.metric-label, .speed-label, .points-label, .time-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.time-card.user {
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    color: white;
+}
+
+.time-card.user .time-value {
+    color: white;
+}
+
+.time-card.user .time-label {
+    color: rgba(255,255,255,0.9);
+}
+
+.vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #6c757d;
+    font-size: 1.2rem;
+}
+
+.time-badge {
+    background: #28a745;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* Feature Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.feature-card.premium {
+    background: linear-gradient(145deg, #fff, #f8f9fa);
+    border: 2px solid #667eea;
+}
+
+.feature-icon-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-right: 1rem;
+}
+
+.feature-badge {
+    position: absolute;
+    top: -5px;
+    left: 60px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    animation: badge-pulse 2s infinite;
+}
+
+@keyframes badge-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.feature-card p {
+    color: #6c757d;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.feature-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.feature-stats .stat {
+    background: #f8f9fa;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feature-stats .stat i {
+    color: #667eea;
+}
+
+/* Survey Categories */
+.survey-categories {
+    margin-bottom: 2rem;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.category-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+}
+
+.category-card.quick {
+    border-left: 4px solid #28a745;
+}
+
+.category-card.standard {
+    border-left: 4px solid #ffc107;
+}
+
+.category-card.detailed {
+    border-left: 4px solid #dc3545;
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-time {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #495057;
+    margin-bottom: 0.25rem;
+}
+
+.category-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.category-desc {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.category-points {
+    background: #667eea;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Points Progress */
+.points-card.main {
+    grid-column: span 2;
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    color: white;
+}
+
+/* Fix for progress bar in rewards program */
+.points-progress {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    position: relative;
+    overflow: visible;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.progress-text {
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.progress-bar.enhanced {
+    height: 10px;
+    background: linear-gradient(90deg, #4f8cff, #2563eb);
+    border-radius: 5px;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 2px 8px rgba(79, 140, 255, 0.3);
+}
+
+/* Additional styles for better visibility */
+.points-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.points-card.main {
+    background: linear-gradient(145deg, #4f8cff, #2563eb);
+}
+
+/* Ensure text is visible on the progress bar */
+.points-card.main .progress-text {
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.points-progress {
+    background: rgba(255,255,255,0.2);
+    height: 8px;
+    border-radius: 4px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #28a745, #20c997);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.points-next {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Banners and Badges */
+.trust-badge, .achievement-badge, .special-offer, .achievement-banner {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.special-offer {
+    background: linear-gradient(145deg, #ff6b6b, #ff8e53);
+    color: white;
+}
+
+.achievement-banner {
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    color: white;
+}
+
+.badge-content, .offer-content, .banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.badge-icon, .offer-icon, .banner-icon {
+    font-size: 3rem;
+}
+
+.badge-text h3, .offer-text h3, .banner-text h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.badge-text p, .offer-text p, .banner-text p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Security Score */
+.security-score {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #28a745, #20c997);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+}
+
+.score-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.score-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.score-details {
+    flex: 1;
+}
+
+.score-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.score-item i {
+    color: #28a745;
+}
+
+/* Certifications */
+.certifications {
+    margin-bottom: 2rem;
+}
+
+.cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.cert-item {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.cert-item:hover {
+    transform: translateY(-3px);
+}
+
+.cert-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.cert-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.cert-desc {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* Back Button */
+.back-button-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #6c757d;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Enhanced Rewards Program Styles */
+
+/* Floating Rewards Animation */
+.rewards-hero {
+    position: relative;
+    overflow: visible;
+}
+
+.floating-rewards {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.floating-coin {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: float-up 4s ease-in-out infinite;
+    opacity: 0.3;
+}
+
+.floating-coin:nth-child(1) { left: 10%; animation-delay: 0s; }
+.floating-coin:nth-child(2) { left: 30%; animation-delay: 1s; }
+.floating-coin:nth-child(3) { left: 60%; animation-delay: 2s; }
+.floating-coin:nth-child(4) { left: 85%; animation-delay: 3s; }
+
+@keyframes float-up {
+    0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.3; }
+    80% { opacity: 0.3; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Enhanced Points Overview */
+.points-overview.enhanced {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.points-card.main.premium {
+    background: linear-gradient(135deg, #4f8cff, #2563eb, #1d4ed8);
+    color: white;
+    grid-row: span 2;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 
+        0 8px 32px rgba(79, 140, 255, 0.3),
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.points-card.main.premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.6), 
+        transparent
+    );
+    animation: shimmer 3s infinite;
+}
+
+.points-card.main.premium::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.points-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.points-info h3 {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.points-rank {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.points-amount {
+    font-size: 42px !important;
+    font-weight: 900 !important;
+    margin: 16px 0 8px 0;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 2;
+}
+
+.points-amount::after {
+    content: 'pts';
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-left: 4px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.points-progress {
+    margin-bottom: 16px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.progress-bar.enhanced {
+    height: 8px;
+    background: linear-gradient(90deg, #28a745, #20c997, #10b981);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.progress-bar.enhanced::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: progress-shine 2s infinite;
+}
+
+@keyframes progress-shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.points-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.btn-reward {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-reward.primary {
+    background: rgba(255, 255, 255, 0.95);
+    color: #2563eb;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.btn-reward.secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.btn-reward:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-reward.secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.points-change {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.points-change.positive {
+    color: #28a745;
+}
+
+/* Responsive Design for Rewards */
+@media (max-width: 768px) {
+    .points-overview.enhanced {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    
+    .points-card.main.premium {
+        min-height: 240px;
+        padding: 20px;
+    }
+    
+    .points-amount {
+        font-size: 32px !important;
+        margin: 12px 0 6px 0;
+    }
+    
+    .points-amount::after {
+        font-size: 14px;
+    }
+    
+    .points-info h3 {
+        font-size: 16px !important;
+    }
+    
+    .points-rank {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    
+    .btn-reward {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .points-overview.enhanced {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .points-card.main.premium {
+        min-height: 200px;
+        padding: 16px;
+    }
+    
+    .points-amount {
+        font-size: 28px !important;
+    }
+    
+    .btn-reward {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+.streak-fire {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.points-card.bonus {
+    background: linear-gradient(145deg, #ff6b6b, #ff8e53);
+    color: white;
+}
+
+.bonus-timer {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    opacity: 0.9;
+}
+
+/* Rewards Store */
+.rewards-store {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.store-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.store-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e9ecef;
+    background: white;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.filter-btn:hover:not(.active) {
+    background: #f8f9fa;
+}
+
+.store-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.reward-item {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.reward-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.reward-badge {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.reward-image {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.reward-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.reward-info p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.reward-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.reward-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reward-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-1px);
+}
+
+/* Achievements Section */
+.achievements-section {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.achievement-card {
+    background: #f8f9fa;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.achievement-card.unlocked {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border: 2px solid #28a745;
+}
+
+.achievement-card.locked {
+    opacity: 0.6;
+    filter: grayscale(0.5);
+}
+
+.achievement-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.achievement-desc {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-points {
+    font-weight: 600;
+    color: #28a745;
+    font-size: 0.9rem;
+}
+
+.achievement-progress {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Leaderboard Preview */
+.leaderboard-preview {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.leaderboard-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.view-all-btn {
+    background: none;
+    border: 1px solid #667eea;
+    color: #667eea;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.leaderboard-item.you {
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    color: white;
+}
+
+.leaderboard-item:hover {
+    transform: translateX(5px);
+}
+
+.rank {
+    font-weight: 700;
+    font-size: 1.1rem;
+    width: 40px;
+    text-align: center;
+}
+
+.rank.gold {
+    color: #ffd700;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.player-avatar {
+    font-size: 1.5rem;
+}
+
+.player-name {
+    font-weight: 600;
+}
+
+.player-points {
+    font-weight: 600;
+    text-align: right;
+    min-width: 80px;
+}
+
+.player-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+.player-change.positive {
+    color: #28a745;
+}
+
+/* Enhanced Special Offer */
+.special-offer.enhanced {
+    background: linear-gradient(145deg, #ff6b6b, #ff8e53);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.special-offer.enhanced::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: float 20s linear infinite;
+}
+
+.offer-timer {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Responsive Design for Rewards */
+@media (max-width: 768px) {
+    .points-overview.enhanced {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .points-card.main.premium {
+        grid-column: span 2;
+    }
+    
+    .store-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .store-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .store-filters {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .points-overview.enhanced {
+        grid-template-columns: 1fr;
+    }
+    
+    .points-card.main.premium {
+        grid-column: span 1;
+    }
+}

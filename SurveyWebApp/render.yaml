@@ -1,0 +1,24 @@
+services:
+  # Web Service
+  - type: web
+    name: survey-web-app
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        value: ${DATABASE_URL}
+    autoDeploy: true
+
+  # PostgreSQL Database (recommended over SQL Server for Render)
+  - type: postgres
+    name: survey-db
+    region: oregon
+    plan: free
+    databaseName: surveydb
+    user: surveyuser

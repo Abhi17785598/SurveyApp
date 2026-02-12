@@ -1,0 +1,17 @@
+**/.dockerignore
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/Properties/
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/*.md
+**/*.txt
+**/README.md
+**/LICENSE
+**/.git/
+**/.gitignore
+**/node_modules/
+**/npm-debug.log
+**/yarn-error.log

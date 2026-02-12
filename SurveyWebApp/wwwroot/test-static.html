@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Static File Test</title>
+</head>
+<body>
+    <h1>Static File Test</h1>
+    <p>If you can see this page, static files are working!</p>
+    
+    <h2>Testing CSS</h2>
+    <link href="/css/voice-controls.css" rel="stylesheet">
+    <div class="voice-controls">
+        <p>If this has styling, CSS is working</p>
+    </div>
+    
+    <h2>Testing JavaScript</h2>
+    <div id="js-test">JavaScript not loaded yet</div>
+    <script src="/js/voice-recognition-final.js"></script>
+    <script>
+        setTimeout(() => {
+            const testEl = document.getElementById('js-test');
+            if (typeof window.voiceService !== 'undefined') {
+                testEl.innerHTML = '✅ JavaScript loaded successfully! VoiceRecognitionService is available.';
+                testEl.style.color = 'green';
+                
+                // Test voice flow
+                console.log('🧪 Testing voice flow automatically...');
+                setTimeout(() => {
+                    if (typeof window.startVoiceFlow === 'function') {
+                        window.startVoiceFlow();
+                    } else {
+                        console.log('❌ startVoiceFlow function not found');
+                    }
+                }, 2000);
+            } else {
+                testEl.innerHTML = '❌ JavaScript failed to load or voiceService not found.';
+                testEl.style.color = 'red';
+            }
+        }, 1000);
+    </script>
+    
+    <h2>Browser Info</h2>
+    <script>
+        document.write('<p>User Agent: ' + navigator.userAgent + '</p>');
+        document.write('<p>Speech Recognition: ' + (window.SpeechRecognition || window.webkitSpeechRecognition ? '✅ Available' : '❌ Not Available') + '</p>');
+        document.write('<p>Speech Synthesis: ' + ('speechSynthesis' in window ? '✅ Available' : '❌ Not Available') + '</p>');
+    </script>
+</body>
+</html>

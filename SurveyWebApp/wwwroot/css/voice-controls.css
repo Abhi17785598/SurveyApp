@@ -1,0 +1,182 @@
+/* Voice Recognition Controls Styling */
+.voice-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(0, 32, 77, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid rgba(79, 140, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 300px;
+}
+
+.voice-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.voice-btn {
+    background: linear-gradient(135deg, #00205B 0%, #001A4D 100%);
+    border: 2px solid #003366;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+}
+
+.voice-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #003366 0%, #002652 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 140, 255, 0.3);
+}
+
+.voice-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #666;
+    border-color: #555;
+}
+
+.voice-btn.listening {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border-color: #bd2130;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.voice-status {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.voice-status.listening {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.voice-status.error {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .voice-controls {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        padding: 10px;
+    }
+    
+    .voice-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .voice-btn {
+        flex: 1;
+        min-width: 120px;
+        font-size: 12px;
+        padding: 10px 15px;
+    }
+    
+    .voice-status {
+        width: 100%;
+        order: -1;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .voice-controls {
+        bottom: 5px;
+        right: 5px;
+        left: 5px;
+        padding: 8px;
+    }
+    
+    .voice-btn {
+        font-size: 11px;
+        padding: 8px 12px;
+        min-height: 40px;
+    }
+}
+
+/* Keyboard shortcut hint */
+.voice-controls::before {
+    content: "Press Ctrl+V to toggle voice";
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.voice-controls:hover::before {
+    opacity: 1;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .voice-controls {
+        background: #000;
+        border: 2px solid #fff;
+    }
+    
+    .voice-btn {
+        background: #000;
+        border: 2px solid #fff;
+        color: #fff;
+    }
+    
+    .voice-btn:hover:not(:disabled) {
+        background: #333;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .voice-btn,
+    .voice-btn.listening,
+    .voice-controls::before {
+        transition: none;
+        animation: none;
+    }
+}

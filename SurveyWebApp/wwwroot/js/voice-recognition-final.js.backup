@@ -1,0 +1,712 @@
+let FLOW_STEP = 0;
+let QUESTION_INDEX = 0;
+
+// Test function for debugging - call from browser console
+window.testVoiceRecognition = function(text) {
+    console.log('🔧 === TESTING VOICE RECOGNITION ===');
+    console.log('🔧 Testing with:', text);
+    console.log('🔧 Current FLOW_STEP:', FLOW_STEP);
+    
+    handleVoiceInput(text);
+    console.log('🔧 === END TEST ===');
+};
+
+// Global speech handler for native input
+window.fromNativeSpeech = function(text) {
+    console.log('🔧 Received from native:', text);
+    handleVoiceInput(text);
+};
+
+class VoiceRecognitionService {
+    constructor() {
+        this.recognition = null;
+        this.synthesis = window.speechSynthesis;
+        this.isListening = false;
+        this.currentLanguage = 'en-US';
+        this.isWebView = this.detectWebView();
+        
+        this.setupButtons();
+        this.setupGlobalSpeechHandler();
+        
+        console.log('🔧 VoiceRecognitionService initialized');
+        console.log('🔧 Is WebView:', this.isWebView);
+    }
+    
+    detectWebView() {
+        return /wv|WebView/i.test(navigator.userAgent) || 
+               typeof window.androidInterface !== 'undefined' ||
+               typeof window.speechInterface !== 'undefined';
+    }
+    
+    getAndroidInterface() {
+        return window.androidInterface || window.speechInterface;
+    }
+    
+    setupButtons() {
+        const voiceToggle = document.getElementById('voiceToggle');
+        const speakQuestion = document.getElementById('speakQuestion');
+        
+        if (voiceToggle) {
+            voiceToggle.addEventListener('click', () => this.toggleVoiceRecognition());
+        }
+        
+        if (speakQuestion) {
+            speakQuestion.addEventListener('click', () => this.speakCurrentQuestion());
+        }
+    }
+    
+    setupGlobalSpeechHandler() {
+        // Setup global speech handler for native input
+        if (typeof window.fromNativeSpeech === 'function') {
+            console.log('🔧 Native speech hooks installed');
+        }
+    }
+    
+    toggleVoiceRecognition() {
+        if (this.isWebView) {
+            const androidInterface = this.getAndroidInterface();
+            if (androidInterface) {
+                if (this.isListening) {
+                    androidInterface.stopSpeechRecognition();
+                    this.isListening = false;
+                    this.updateStatus('Ready');
+                    this.updateButtonState(false);
+                } else {
+                    androidInterface.startSpeechRecognition();
+                    this.isListening = true;
+                    this.updateStatus('Listening...');
+                    this.updateButtonState(true);
+                }
+            }
+        } else {
+            // Web speech recognition
+            this.setupWebSpeechRecognition();
+        }
+    }
+    
+    speakCurrentQuestion() {
+        const questionText = this.getCurrentQuestionText();
+        if (this.isWebView) {
+            const androidInterface = this.getAndroidInterface();
+            if (androidInterface && androidInterface.speakCurrentQuestion) {
+                androidInterface.speakCurrentQuestion(questionText);
+            } else {
+                console.log('❌ speakCurrentQuestion not available');
+            }
+        } else {
+            this.speakText(questionText);
+        }
+    }
+    
+    getCurrentQuestionText() {
+        // Try to find the current question text
+        const questionElements = [
+            '.question-text',
+            '.survey-question',
+            '[class*="question"]',
+            'label',
+            'legend'
+        ];
+        
+        for (const selector of questionElements) {
+            const element = document.querySelector(selector);
+            if (element && element.textContent) {
+                const text = element.textContent.trim();
+                if (text.length > 10 && !text.toLowerCase().includes('language')) {
+                    return text;
+                }
+            }
+        }
+        
+        return 'Please answer the question';
+    }
+    
+    speakText(text) {
+        if (this.synthesis) {
+            this.synthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = this.currentLanguage;
+            this.synthesis.speak(utterance);
+        }
+    }
+    
+    updateStatus(status) {
+        const statusElement = document.getElementById('voiceStatus');
+        if (statusElement) {
+            statusElement.textContent = status;
+        }
+    }
+    
+    updateButtonState(isListening) {
+        const voiceToggle = document.getElementById('voiceToggle');
+        if (voiceToggle) {
+            if (isListening) {
+                voiceToggle.textContent = '🛑 Stop';
+                voiceToggle.classList.add('listening');
+            } else {
+                voiceToggle.textContent = '🎤 Start';
+                voiceToggle.classList.remove('listening');
+            }
+        }
+    }
+}
+
+// Initialize the service
+document.addEventListener('DOMContentLoaded', function() {
+    window.voiceService = new VoiceRecognitionService();
+    
+    // Start voice flow only at the beginning
+    setTimeout(() => {
+        if (window.voiceService.isWebView && FLOW_STEP === 0) {
+            console.log('🔧 Starting initial voice flow');
+            startVoiceFlow();
+        }
+    }, 1500);
+});
+
+// Voice flow management
+function startVoiceFlow() {
+    console.log('🔧 Starting voice flow, FLOW_STEP:', FLOW_STEP);
+    
+    const androidInterface = window.androidInterface || window.speechInterface;
+    
+    if (FLOW_STEP === 0) {
+        console.log('🔧 Speaking name instruction');
+        if (androidInterface && androidInterface.speakNameInstruction) {
+            androidInterface.speakNameInstruction();
+        } else {
+            console.log('❌ speakNameInstruction not available');
+        }
+    } else if (FLOW_STEP === 1) {
+        console.log('🔧 Speaking state instruction');
+        if (androidInterface && androidInterface.speakStateInstruction) {
+            androidInterface.speakStateInstruction();
+        } else {
+            console.log('❌ speakStateInstruction not available');
+        }
+    } else if (FLOW_STEP === 2) {
+        console.log('🔧 Speaking current question');
+        if (androidInterface && androidInterface.speakCurrentQuestion) {
+            const questionText = getCurrentQuestionText();
+            androidInterface.speakCurrentQuestion(questionText);
+        } else {
+            console.log('❌ speakCurrentQuestion not available');
+        }
+    } else if (FLOW_STEP === 3) {
+        console.log('🔧 Speaking submit instruction');
+        if (androidInterface && androidInterface.speakNavigationInstruction) {
+            androidInterface.speakNavigationInstruction("Say submit to finish");
+        } else {
+            console.log('❌ speakNavigationInstruction not available');
+        }
+    }
+}
+
+function handleVoiceInput(text) {
+    console.log('🔧 handleVoiceInput called with: "${text}"');
+    console.log('🔧 Current FLOW_STEP:', FLOW_STEP);
+    
+    if (text === "submit" && FLOW_STEP === 3) {
+        console.log('🔧 Submit command detected');
+        submitSurvey();
+        return;
+    }
+    
+    switch (FLOW_STEP) {
+        case 0:
+            handleName(text);
+            break;
+        case 1:
+            handleState(text);
+            break;
+        case 2:
+            handleQuestion(text);
+            break;
+        default:
+            console.log('🔧 Unknown FLOW_STEP:', FLOW_STEP);
+    }
+}
+
+function normalize(text) {
+    return text
+        .toLowerCase()
+        .replace(/[.,!?]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function handleName(text) {
+    console.log('🔧 handleName called with:', text);
+    
+    const nameInput = document.getElementById('userName') || document.querySelector('input[type="text"]');
+    
+    if (nameInput) {
+        nameInput.value = text;
+        nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+        nameInput.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('✅ Name entered:', text);
+    } else {
+        console.log('❌ Name input not found');
+    }
+    
+    // Move to state step
+    FLOW_STEP = 1;
+    setTimeout(() => {
+        startVoiceFlow();
+    }, 1000);
+}
+
+function handleState(text) {
+    console.log('🔧 handleState called with:', text);
+    
+    // Simple approach - find any select element
+    const select = document.querySelector('select');
+    
+    if (!select) {
+        console.log('❌ No select found, moving to questions');
+        FLOW_STEP = 2;
+        startVoiceFlow();
+        return;
+    }
+
+    console.log('🔧 Found select with', select.options.length, 'options');
+    
+    const spoken = normalize(text);
+    console.log('🔧 Looking for:', spoken);
+
+    let selected = false;
+
+    // Simple loop through all options
+    for (let i = 0; i < select.options.length; i++) {
+        const option = select.options[i];
+        const optionText = normalize(option.text);
+        
+        console.log(`🔧 Option ${i}: "${optionText}"`);
+        
+        // Simple matching
+        if (optionText.includes(spoken) || spoken.includes(optionText)) {
+            console.log('✅ Match found:', option.text);
+            
+            // Direct selection
+            select.selectedIndex = i;
+            select.value = option.value;
+            
+            // Simple event trigger
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+            
+            selected = true;
+            break;
+        }
+    }
+
+    // If no match, try common state names
+    if (!selected) {
+        const commonStates = {
+            'uttar pradesh': ['uttar pradesh', 'up'],
+            'rajasthan': ['rajasthan', 'rj'],
+            'madhya pradesh': ['madhya pradesh', 'mp'],
+            'bihar': ['bihar', 'br'],
+            'gujarat': ['gujarat', 'gj'],
+            'maharashtra': ['maharashtra', 'mh'],
+            'delhi': ['delhi', 'dl'],
+            'karnataka': ['karnataka', 'ka'],
+            'tamil nadu': ['tamil nadu', 'tn'],
+            'andhra pradesh': ['andhra pradesh', 'ap'],
+            'telangana': ['telangana', 'tg'],
+            'kerala': ['kerala', 'kl'],
+            'punjab': ['punjab', 'pb'],
+            'haryana': ['haryana', 'hr'],
+            'west bengal': ['west bengal', 'wb']
+        };
+
+        for (const [state, aliases] of Object.entries(commonStates)) {
+            for (const alias of aliases) {
+                if (spoken.includes(alias)) {
+                    console.log('🔧 Trying state alias:', alias);
+                    
+                    for (let i = 0; i < select.options.length; i++) {
+                        const option = select.options[i];
+                        const optionText = normalize(option.text);
+                        
+                        if (optionText.includes(state)) {
+                            console.log('✅ Alias match found:', option.text);
+                            
+                            select.selectedIndex = i;
+                            select.value = option.value;
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                            
+                            selected = true;
+                            break;
+                        }
+                    }
+                }
+                if (selected) break;
+            }
+        }
+    }
+
+    if (!selected) {
+        console.log('❌ No state match found');
+    }
+
+    // Always move to questions
+    FLOW_STEP = 2;
+    QUESTION_INDEX = 0;
+    console.log('🔧 Moving to questions');
+
+    setTimeout(startVoiceFlow, 500);
+}
+
+function handleQuestion(text) {
+    if (normalize(text) === 'next') {
+        moveToNextStep();
+        return;
+    }
+    
+    console.log(`🔧 handleQuestion: "${text}"`);
+    
+    // Find current question
+    const currentQuestion = findCurrentQuestion();
+    if (!currentQuestion) {
+        console.log('🔧 No current question found');
+        
+        // Check if there are any questions left
+        const anyQuestion = document.querySelector('.question-container, .survey-question, [class*="question"]');
+        if (!anyQuestion) {
+            console.log('🔧 All questions done, moving to submit');
+            FLOW_STEP = 3;
+            setTimeout(startVoiceFlow, 500);
+        } else {
+            console.log('🔧 Questions still exist, retrying');
+            setTimeout(startVoiceFlow, 500);
+        }
+        return;
+    }
+    
+    console.log('🔧 Found current question, selecting option');
+    const success = selectOption(currentQuestion, text);
+    
+    if (success) {
+        console.log('✅ Option selected, moving to next question');
+        
+        // Auto-advance after successful selection
+        setTimeout(() => {
+            moveToNextStep();
+        }, 1000);
+    } else {
+        console.log('❌ Failed to select option, retrying');
+        setTimeout(() => {
+            startVoiceFlow();
+        }, 1000);
+    }
+}
+
+function findCurrentQuestion() {
+    console.log('🔧 findCurrentQuestion - searching for unanswered questions');
+    
+    // Log all form elements for debugging
+    console.log('🔧 All radio buttons:', document.querySelectorAll('input[type="radio"]').length);
+    console.log('🔧 All selects:', document.querySelectorAll('select').length);
+    console.log('🔧 All textareas:', document.querySelectorAll('textarea').length);
+    
+    // Try to find unanswered questions
+    const unansweredRadios = Array.from(document.querySelectorAll('input[type="radio"]')).filter(r => !r.checked);
+    const unansweredSelects = Array.from(document.querySelectorAll('select')).filter(s => !s.value);
+    const unansweredTextareas = Array.from(document.querySelectorAll('textarea')).filter(t => !t.value.trim());
+    
+    console.log('🔧 Unanswered radios:', unansweredRadios.length);
+    console.log('🔧 Unanswered selects:', unansweredSelects.length);
+    console.log('🔧 Unanswered textareas:', unansweredTextareas.length);
+    
+    // Return first unanswered question container
+    if (unansweredRadios.length > 0) {
+        const radio = unansweredRadios[0];
+        const container = radio.closest('.question-container, .survey-question, .form-group, fieldset, div');
+        if (container) {
+            console.log('🔧 Found unanswered radio question');
+            return container;
+        }
+    }
+    
+    if (unansweredSelects.length > 0) {
+        const select = unansweredSelects[0];
+        const container = select.closest('.question-container, .survey-question, .form-group, fieldset, div');
+        if (container) {
+            console.log('🔧 Found unanswered select question');
+            return container;
+        }
+    }
+    
+    if (unansweredTextareas.length > 0) {
+        const textarea = unansweredTextareas[0];
+        const container = textarea.closest('.question-container, .survey-question, .form-group, fieldset, div');
+        if (container) {
+            console.log('🔧 Found unanswered textarea question');
+            return container;
+        }
+    }
+    
+    console.log('🔧 No unanswered questions found');
+    return null;
+}
+
+function selectOption(questionElement, text) {
+    if (!questionElement) return false;
+    
+    const questionType = detectQuestionType(questionElement);
+    let success = false;
+    
+    switch (questionType) {
+        case 'radio':
+            success = handleRadio(questionElement, text);
+            break;
+        case 'checkbox':
+            success = handleCheckbox(questionElement, text);
+            break;
+        case 'rating':
+            success = handleRating(questionElement, text);
+            break;
+        case 'text':
+            success = handleText(questionElement, text);
+            break;
+    }
+    
+    return success;
+}
+
+function detectQuestionType(section) {
+    if (section.querySelector('input[type="radio"]')) return 'radio';
+    if (section.querySelector('input[type="checkbox"]')) return 'checkbox';
+    if (section.querySelector('input[type="number"], input[type="range"], select')) return 'rating';
+    if (section.querySelector('textarea')) return 'text';
+    return 'unknown';
+}
+
+function handleRadio(section, transcript) {
+    console.log(`🔧 handleRadio: "${transcript}"`);
+    
+    // Find all radio buttons
+    let radios = section.querySelectorAll('input[type="radio"]');
+    
+    // If no radios in section, get all radios on page
+    if (radios.length === 0) {
+        radios = document.querySelectorAll('input[type="radio"]');
+    }
+    
+    console.log(`🔧 Found ${radios.length} radio buttons`);
+    
+    if (radios.length === 0) {
+        console.log('❌ No radio buttons found');
+        return false;
+    }
+    
+    const index = getOptionIndex(transcript);
+    console.log(`🔧 Option index: ${index}`);
+
+    if (index !== undefined && index < radios.length && radios[index]) {
+        console.log(`🔧 Selecting radio ${index}: ${radios[index].value}`);
+        
+        // Clear all radios in the same group
+        const radioName = radios[index].name;
+        if (radioName) {
+            document.querySelectorAll(`input[type="radio"][name="${radioName}"]`).forEach(radio => {
+                radio.checked = false;
+            });
+        }
+        
+        // Select the target radio
+        radios[index].checked = true;
+        
+        // Simple event triggers
+        radios[index].dispatchEvent(new Event('change', { bubbles: true }));
+        radios[index].dispatchEvent(new Event('click', { bubbles: true }));
+        
+        console.log('✅ Radio selected successfully');
+        return true;
+    } else {
+        console.log(`❌ Invalid index ${index} or radio not found`);
+        
+        // Log available options
+        for (let i = 0; i < radios.length; i++) {
+            const label = radios[i].nextElementSibling?.textContent || 
+                         radios[i].parentElement?.textContent || 
+                         radios[i].value || 
+                         `Option ${i + 1}`;
+            console.log(`  Option ${i}: "${label.trim()}"`);
+        }
+        
+        return false;
+    }
+}
+
+function handleCheckbox(section, transcript) {
+    console.log(`🔧 handleCheckbox: "${transcript}"`);
+    
+    const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+    
+    if (checkboxes.length === 0) {
+        console.log('❌ No checkboxes found');
+        return false;
+    }
+    
+    const index = getOptionIndex(transcript);
+    
+    if (index !== undefined && index < checkboxes.length && checkboxes[index]) {
+        checkboxes[index].checked = !checkboxes[index].checked;
+        checkboxes[index].dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('✅ Checkbox toggled successfully');
+        return true;
+    }
+    
+    return false;
+}
+
+function handleRating(section, transcript) {
+    console.log(`🔧 handleRating: "${transcript}"`);
+    
+    const rating = section.querySelector('input[type="number"], input[type="range"]');
+    const select = section.querySelector('select');
+    
+    if (rating) {
+        const value = parseInt(transcript);
+        if (!isNaN(value) && value >= 1 && value <= 10) {
+            rating.value = value;
+            rating.dispatchEvent(new Event('input', { bubbles: true }));
+            rating.dispatchEvent(new Event('change', { bubbles: true }));
+            console.log('✅ Rating set successfully');
+            return true;
+        }
+    }
+    
+    if (select) {
+        const index = getOptionIndex(transcript);
+        if (index !== undefined && index < select.options.length) {
+            select.selectedIndex = index;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+            console.log('✅ Select option set successfully');
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+function handleText(section, transcript) {
+    console.log(`🔧 handleText: "${transcript}"`);
+    
+    const textarea = section.querySelector('textarea');
+    const textInput = section.querySelector('input[type="text"]');
+    
+    if (textarea) {
+        textarea.value = transcript;
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+        textarea.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('✅ Textarea filled successfully');
+        return true;
+    }
+    
+    if (textInput) {
+        textInput.value = transcript;
+        textInput.dispatchEvent(new Event('input', { bubbles: true }));
+        textInput.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('✅ Text input filled successfully');
+        return true;
+    }
+    
+    return false;
+}
+
+function getOptionIndex(transcript) {
+    const t = normalize(transcript);
+    console.log('🔧 getOptionIndex:', t);
+
+    // Simple direct matching
+    if (t.includes('option a') || t === 'a' || t.includes('one') || t.includes('1')) {
+        console.log('✅ Matched option A');
+        return 0;
+    }
+    if (t.includes('option b') || t === 'b' || t.includes('two') || t.includes('2')) {
+        console.log('✅ Matched option B');
+        return 1;
+    }
+    if (t.includes('option c') || t === 'c' || t.includes('three') || t.includes('3')) {
+        console.log('✅ Matched option C');
+        return 2;
+    }
+    if (t.includes('option d') || t === 'd' || t.includes('four') || t.includes('4')) {
+        console.log('✅ Matched option D');
+        return 3;
+    }
+
+    // True/false
+    if (t.includes('true') || t.includes('yes')) {
+        console.log('✅ Matched true/yes');
+        return 0;
+    }
+    if (t.includes('false') || t.includes('no')) {
+        console.log('✅ Matched false/no');
+        return 1;
+    }
+
+    console.log('❌ No match for:', t);
+    return undefined;
+}
+
+function moveToNextStep() {
+    QUESTION_INDEX++;
+    
+    const next = findCurrentQuestion();
+    
+    if (next) {
+        console.log('🔧 Moving to next question');
+        setTimeout(startVoiceFlow, 500);
+    } else {
+        console.log('🔧 All questions completed, moving to submit');
+        FLOW_STEP = 3;
+        setTimeout(startVoiceFlow, 500);
+    }
+}
+
+function submitSurvey() {
+    console.log('🔧 Submitting survey...');
+    
+    let form = document.querySelector('form[action*="submit"]');
+    
+    if (!form) {
+        const anyForm = document.querySelector('form');
+        if (anyForm) {
+            form = anyForm;
+        }
+    }
+    
+    if (form) {
+        form.submit();
+        console.log('✅ Survey submitted successfully');
+    } else {
+        console.log('❌ No form found to submit');
+    }
+}
+
+// Helper function to get current question text
+function getCurrentQuestionText() {
+    const currentQuestion = findCurrentQuestion();
+    if (currentQuestion) {
+        const questionText = currentQuestion.querySelector('label, legend, .question-text, [class*="question"]');
+        if (questionText && questionText.textContent) {
+            return questionText.textContent.trim();
+        }
+    }
+    
+    return 'Please answer the question';
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'v') {
+        e.preventDefault();
+        window.voiceService?.toggleVoiceRecognition();
+    } else if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        window.voiceService?.speakCurrentQuestion();
+    }
+});
