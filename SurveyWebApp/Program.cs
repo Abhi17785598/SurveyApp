@@ -40,8 +40,21 @@ builder.Services.AddCors(options =>
 });
 
 // ================= DB =================
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Handle Render's PostgreSQL connection string format
+if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgres://"))
+{
+    // Convert postgres:// to Npgsql format
+    var uri = new Uri(connectionString);
+    var userInfo = uri.UserInfo.Split(':');
+    var dbInfo = uri.AbsolutePath.Split('/');
+    
+    connectionString = $"Host={uri.Host};Port={uri.Port};Username={userInfo[0]};Password={userInfo[1]};Database={dbInfo[1]}";
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(connectionString)
     .EnableSensitiveDataLogging(false)
     .EnableServiceProviderCaching()
     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
